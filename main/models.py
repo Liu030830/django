@@ -32,7 +32,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     buyer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    name = models.CharField(max_length=100, verbose_name="姓名")
+    name = models.CharField(max_length=100, verbose_name="姓名")  # 确保这里的 name 字段存在
     phone = models.CharField(max_length=20, verbose_name="联系电话")
     address = models.TextField(verbose_name="收货地址")
     created_at = models.DateTimeField(auto_now_add=True)

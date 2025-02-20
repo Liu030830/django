@@ -39,8 +39,13 @@
                 <img src="{% static 'main/images/logo.png' %}" height="40">
             </a>
             <div class="d-flex align-items-center">
+                <!-- 返回商城按钮 -->
                 <a href="{% url 'home' %}" class="btn btn-outline-success me-3">
                     <i class="fas fa-arrow-left me-2"></i>返回商城
+                </a>
+                <!-- 新增：查看订单列表按钮 -->
+                <a href="{% url 'order_list' %}" class="btn btn-primary me-3">
+                    查看订单列表
                 </a>
                 <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">

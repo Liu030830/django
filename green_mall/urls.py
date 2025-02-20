@@ -21,7 +21,7 @@ from main import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from main.views import product_detail, merchant_profile
+from main.views import product_detail, merchant_profile, order_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,4 +36,5 @@ urlpatterns = [
     path('order/<int:order_id>/update/', views.update_order_status, name='update_order_status'),
     path('product/<int:product_id>/', product_detail, name='product_detail'),
     path('merchant/profile/', merchant_profile, name='merchant_profile'),
+    path('orders/', order_list, name='order_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

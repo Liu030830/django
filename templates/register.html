@@ -126,6 +126,17 @@
                             <p class="text-muted">开启您的可持续生活之旅</p>
                         </div>
 
+                        <!-- 显示错误信息 -->
+                        {% if error_messages %}
+                        <div class="alert alert-danger mb-4">
+                            <ul>
+                                {% for message in error_messages %}
+                                <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
                         <!-- 注册表单 -->
                         <form method="post" class="needs-validation" novalidate>
                             {% csrf_token %}
@@ -139,6 +150,7 @@
                                     </span>
                                     {{ form.username }}
                                 </div>
+                                <small class="text-muted">用户名必须是唯一的，且长度为 3 - 20 个字符。</small>
                             </div>
 
                             <!-- 邮箱 -->
@@ -150,6 +162,7 @@
                                     </span>
                                     {{ form.email }}
                                 </div>
+                                <small class="text-muted">请输入有效的邮箱地址，我们会向该邮箱发送验证信息。</small>
                             </div>
 
                             <!-- 密码 -->
@@ -164,6 +177,7 @@
                                 <div class="password-strength mt-2">
                                     <div class="strength-bar" id="password-strength-bar"></div>
                                 </div>
+                                <small class="text-muted">密码长度至少为 8 个字符，建议包含字母、数字和特殊字符。</small>
                             </div>
 
                             <!-- 确认密码 -->
@@ -175,6 +189,7 @@
                                     </span>
                                     {{ form.password2 }}
                                 </div>
+                                <small class="text-muted">请再次输入密码，确保两次输入的密码一致。</small>
                             </div>
 
                             <!-- 商家切换 -->
@@ -191,7 +206,7 @@
                                     </label>
                                 </div>
                                 <small class="text-muted d-block mt-2">
-                                    选择此项可发布和管理商品
+                                    选择此项可发布和管理商品。商家账户需要经过审核，请确保您的信息真实有效。
                                 </small>
                             </div>
 
