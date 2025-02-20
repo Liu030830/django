@@ -58,7 +58,6 @@ def product_detail(request, product_id):
     })
 
 
-
 @login_required
 @require_POST
 def toggle_product(request, product_id):
@@ -111,45 +110,49 @@ def home_view(request):
     return render(request, 'home.html', {'products': products})
 
 
-@login_required
+
+
+# 商品上下架视图
 @require_POST
+@login_required
 def toggle_product(request, product_id):
     try:
+        # 获取对应的商品对象
         product = Product.objects.get(id=product_id)
         # 验证当前用户是商品所有者
         if product.merchant == request.user:
+            # 切换商品的上下架状态
             product.is_active = not product.is_active
             product.save()
-            return JsonResponse({'status': 'success', 'is_active': product.is_active})
-        return JsonResponse({'status': 'error', 'message': '权限不足'}, status=403)
+            # 返回成功响应，包含新的状态
+            return JsonResponse({'success': True, 'is_active': product.is_active})
+        else:
+            # 如果用户不是商品所有者，返回权限不足的错误信息
+            return JsonResponse({'success': False, 'message': '权限不足'}, status=403)
     except Product.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': '商品不存在'}, status=404)
+        # 如果商品不存在，返回商品不存在的错误信息
+        return JsonResponse({'success': False, 'message': '商品不存在'}, status=404)
 
 
-@require_POST
-@login_required
-def delete_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    if product.merchant != request.user:
-        return JsonResponse({'status': 'error'}, status=403)
-
-    product.delete()
-    return JsonResponse({'status': 'success'})
-
-
-# views.py
+# 商品删除视图
 @require_POST
 @login_required
 def delete_product(request, product_id):
     try:
-        product = get_object_or_404(Product, id=product_id)
-        if product.merchant != request.user:
-            return JsonResponse({'status': 'error', 'message': '权限不足'}, status=403)
-
-        product.delete()
-        return JsonResponse({'status': 'success'})
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+        # 获取对应的商品对象
+        product = Product.objects.get(id=product_id)
+        # 验证当前用户是商品所有者
+        if product.merchant == request.user:
+            # 删除商品
+            product.delete()
+            # 返回成功响应
+            return JsonResponse({'success': True})
+        else:
+            # 如果用户不是商品所有者，返回权限不足的错误信息
+            return JsonResponse({'success': False, 'message': '权限不足'}, status=403)
+    except Product.DoesNotExist:
+        # 如果商品不存在，返回商品不存在的错误信息
+        return JsonResponse({'success': False, 'message': '商品不存在'}, status=404)
 
 
 @login_required
@@ -178,6 +181,7 @@ def profile_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 
 # 假设商家个人主页的视图函数
 @login_required
