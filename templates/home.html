@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绿色商城 | 发现可持续好物</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'main/css/styles.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.03);
+        }
+        .price-tag {
+            font-size: 1.25rem;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'main/images/logo-white.png' %}" height="30" class="me-2">
+                绿色商城
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'profile' %}" class="btn btn-light me-2">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding-top: 80px;">
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <a href="{% url 'product_detail' product.id %}" class="text-decoration-none">
+                    <div class="card product-card h-100 shadow-sm">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}"
+                             class="card-img-top product-img"
+                             alt="{{ product.name }}">
+                        {% else %}
+                        <div class="card-img-top product-img bg-light d-flex align-items-center justify-content-center">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
+                            <p class="card-text text-muted small">
+                                {{ product.description|truncatechars:60 }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag fw-bold">¥{{ product.price }}</span>
+                                <span class="badge bg-success">
+                                    {{ product.merchant.username }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

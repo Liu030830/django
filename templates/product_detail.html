@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - 绿色商城</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- 自定义 CSS 样式 -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .product-img {
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #28a745;
+        }
+
+        .product-status {
+            font-size: 1rem;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'main/images/logo.png' %}" height="40">
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="{% url 'home' %}" class="btn btn-outline-success me-3">
+                    <i class="fas fa-arrow-left me-2"></i>返回商城
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容容器 -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- 商品图片 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                        style="height: 400px;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 商品信息 -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="fw-bold mb-3">{{ product.name }}</h2>
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="product-price me-3">¥{{ product.price }}</span>
+                            <span class="badge bg-success product-status">在售中</span>
+                        </div>
+
+                        <!-- 购买表单 -->
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_quantity" class="form-label">购买数量</label>
+                                {{ form.quantity }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_name" class="form-label">收货人姓名</label>
+                                {{ form.name }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_phone" class="form-label">联系电话</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_address" class="form-label">收货地址</label>
+                                {{ form.address }}
+                            </div>
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                <i class="fas fa-shopping-cart me-2"></i>立即购买
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品描述 -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h4 class="fw-bold mb-3">商品详情</h4>
+                <div class="text-muted">
+                    {{ product.description|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JavaScript 和 Popper.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
